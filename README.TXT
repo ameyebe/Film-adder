@@ -6,7 +6,7 @@ all he/she needs to know. The comments should usually include at least:
 
 PROJECT TITLE: FIlm recommender
 PURPOSE OF PROJECT: Too allow the user to add movies to a hashmap, and choose them based on genres
-VERSION or DATE: 1
+VERSION or DATE: 2
 HOW TO START THIS PROJECT: Right click film GUI class and select main routine.
 AUTHORS:Benjamin Ameye
 USER INSTRUCTIONS: This code will allow you to add movies to a list, as well as include their director, score (0 to 100)

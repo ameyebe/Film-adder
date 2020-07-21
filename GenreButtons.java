@@ -4,7 +4,7 @@ import java.awt.Color;
  * Draws the buttons the user can select to choose a button
  * 
  * @author Benjamin Ameye
- * @version 1
+ * @version 2
  */
 public class GenreButtons
 {

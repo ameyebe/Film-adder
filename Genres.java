@@ -4,7 +4,7 @@ import java.awt.Color;
  * Has the user select the button for what genre they want
  * 
  * @author Benjamin Ameye 
- * @version 1
+ * @version 2
  */
 public class Genres
 {
