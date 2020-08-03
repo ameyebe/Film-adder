@@ -7,7 +7,7 @@ import java.util.*;
  * Gets the films score
  * 
  * @author Benjamin Ameye
- * @version 2
+ * @version 3
  */
 public class FilmGUI
 {
@@ -15,23 +15,26 @@ public class FilmGUI
     private Film F = new Film();
     private double SCORE = 50;
     
-    //Declaring a array list
+    
+    //Declaring my array list's
     ArrayList<String> Names = new ArrayList<String>();
+    ArrayList<String> OtherGenres = new ArrayList<String>();
+    ArrayList<String> Films = new ArrayList<String>();
     
     /**
      * Constructor for objects of class FilmGui
      */
     public FilmGUI(double MIN, double MAX, double INIT)
     {
-        
+        //Initialising the buttons
         UI.initialise();
         UI.addButton("Quit", UI::quit);
-        UI.addButton("Add a film", this::newFilm);
+        UI.addButton("Add a film", this::name);
         UI.addButton("Print all films", this::Films);
         UI.addButton("Print films by genre", this::FilmGenres);
         UI.addButton("Print films based on director", this::FilmDirectors);
         UI.addButton("Print films by score", this::FilmScores);
-        UI.addSlider("Score the search", MIN, MAX, INIT, this::setScore);
+        UI.addSlider("Set minimum score to search", MIN, MAX, INIT, this::setScore);
         UI.setDivider(0.0);
     }
     
@@ -40,10 +43,10 @@ public class FilmGUI
      */
     private void setScore(double Score)
     {
-        this.SCORE = Score;
-        UI.println(SCORE);
-        UI.sleep(2000);
+        //Setting the score on the slider
         UI.clearPanes();
+        this.SCORE = Score;
+        UI.println("Current minimum search score: " + SCORE);
         
     }
     
@@ -66,10 +69,11 @@ public class FilmGUI
         {
            String Director = UI.askString("Please enter the directort you'd like to view: ");
            Director = Director.toLowerCase();
+           Director = CapitalizeString(Director);
            boolean Check = Names.contains(Director);
            
            if (Check)
-           {
+            {
                F.printDirectors(Director);
                Select = false;
            }
@@ -83,22 +87,53 @@ public class FilmGUI
     }
     
     /**
-     * Adds a film
+     * Has the user enter the films name
+     * Checks if the film has already been added
+     * 
      */
-    public void newFilm()
+    public void name()
     {
         boolean Add = true;
         
         //Asking the user for the films name
         UI.clearPanes();
-        String name = UI.askString("Please enter the name of the film: ");
-        name = name.toLowerCase();
-        UI.println();
+        while (Add == true)
+        {  
+            String name = UI.askString("Please enter the name of the film: ");
+            name = name.toLowerCase();
+            name = CapitalizeString(name);
+            //Checking is we already have the film the user entered stored
+            boolean Checkfilm = Films.contains(name);
+            
+            if (Checkfilm)
+            {
+                UI.println(name + ", is already on this site");
+            }
+            
+            else
+            {
+                Films.add(name);
+                Add = false;
+                newFilm(name);
+            }
+        }
         
+    }
+    
+    /**
+     * Adds a film
+     * 
+     * @param FilmName The name of the film entered by the user
+     */
+    public void newFilm(String FilmName)
+    {  
         //Asking the user for the films director
-        String director = UI.askString("Please enter the name of the films director: ");
-        director = director.toLowerCase();     
         
+        UI.println();
+        String director = UI.askString("Please enter the name of the films director: ");
+        director = director.toLowerCase();
+        director = CapitalizeString(director);
+
         //Checking to see if the director of the new film is already stored
         boolean AddDirector = Names.contains(director);
         
@@ -108,12 +143,10 @@ public class FilmGUI
         }
         else
         {
+            //Adding the director to the arrylist if it's not already present
             Names.add(director);
             UI.println();
         }
-        //Asking the user for the films score
-        int score = UI.askInt("Please enter the films average score (0 to 100): ");
-        UI.println();
         
         // Asking to user to select a genre
         String Genre = "";
@@ -121,7 +154,50 @@ public class FilmGUI
         G.DrawButtons(Genre);
         Genre = (G.getGenre());
         
-        F.addFilm(name, director, score, Genre);
+        //If the user select other, asks the user for the other genre
+        if (Genre.equals("Other"))
+        {
+            Genre = UI.askString("Please enter the new genre of film");
+            Genre = Genre.toLowerCase();
+            Genre = CapitalizeString(Genre);
+            boolean AddGenre = OtherGenres.contains(Genre);
+            
+            if (AddGenre)
+            {
+                UI.println();
+            }
+            
+            else
+            {
+               OtherGenres.add(Genre);
+               UI.println();
+            }
+        }
+        
+        else
+        {
+            UI.println();
+        }
+        
+        UI.println(Genre);
+        //Asking the user for the films score
+        boolean enterScore = true;
+        while (enterScore == true)
+        {
+            int score = UI.askInt("Please enter the films average score (0 to 100): ");
+            UI.println();
+            
+            if (score >= 0 && score <= 100)
+            {
+                F.addFilm(FilmName, director, score, Genre);
+                enterScore = false;
+            }
+            else if (score < 0 || score > 100)
+            {
+                UI.println(score + " is out of range");
+            }
+        }
+        
     }
     
     /**
@@ -141,12 +217,39 @@ public class FilmGUI
     public void FilmGenres()
     {
         UI.clearPanes();
-        
         // Asking to user to select a genre
         String Genre = "";
         Genres G = new Genres();
         G.DrawButtons(Genre);
         Genre = (G.getGenre());
+        
+        //If the user select other, asks the user for the other genre
+        if (Genre.equals("Other"))
+        {
+            for (String Othergenre : OtherGenres)
+            {
+                UI.println(Othergenre);
+            }
+            boolean ChooseotherGenre = true;
+            
+            while (ChooseotherGenre == true)
+            {
+                Genre = UI.askString("Please enter the other genre you'd like to view: ");
+                Genre = Genre.toLowerCase();
+                Genre = CapitalizeString(Genre);
+                boolean ChooseGenre = OtherGenres.contains(Genre);
+                
+                if (ChooseGenre)
+                {
+                    ChooseotherGenre = false;
+                }
+                
+                else
+                {
+                    UI.println(Genre + " is not a genre we have stored");
+                }
+            }
+        }
         
         F.printGenres(Genre);
     }
@@ -173,6 +276,36 @@ public class FilmGUI
         final double SCOREINIT = 50;
         
         FilmGUI obj = new FilmGUI(SCOREMIN, SCOREMAX, SCOREINIT);
+    }
+    
+    /**
+     * Makes it so the first letter of each word in a string is capital
+     * 
+     * @param str the string entered by the user
+     */
+    static String CapitalizeString(String str)
+    {
+        // Creating a char array
+        char wordArray[] = str.toCharArray();
+        for (int i = 0; i < str.length(); i++)
+        {
+            {
+                if (i == 0 && wordArray[i] != ' ' ||
+                    wordArray[i] != ' ' && wordArray[i-1] == ' ')
+                    {
+                        //Checking if the current character is a number or not
+                        boolean checkChar = Character.isDigit(wordArray[i]);
+                        
+                        if (!checkChar)
+                        {
+                            wordArray[i] = (char)(wordArray[i] - 'a' + 'A');
+                        }
+                     }
+                }
+           }
+        
+        String STR = new String(wordArray);
+        return STR;
     }
     
 }

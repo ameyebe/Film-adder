@@ -4,12 +4,12 @@ import java.awt.Color;
  * Has the user select the button for what genre they want
  * 
  * @author Benjamin Ameye 
- * @version 2
+ * @version 3
  */
 public class Genres
 {
     // The genre buttons
-    //Creating a array of genres
+    //Creating the arrays I'll use
     private static final int MAXGENRES = 6;
     private GenreButtons[] GenreList = new GenreButtons[MAXGENRES];
     private String[] GenreNames = {"Action", "Horror", "Sci Fi", "Romance", "Mystery", "Other"};
@@ -19,8 +19,8 @@ public class Genres
     Color.blue, Color.black};
     
     //Variables to pass into Genrebuttons
-    private static final double LEFT = 50;
-    private static final double TOP = 60;
+    private static final double LEFT = 50;  // X axis
+    private static final double TOP = 60;  // Y axis
     private static int ChosenGenre = 0;
     private String GenreName = "";
     private String Genre = "";
@@ -28,23 +28,14 @@ public class Genres
     private Color TextColor = null;
     
     private boolean Choose = true;
-
-    
-    /**
-     * Constructor for objects of class Genres
-     * @param   director    The name of the films director
-     */
-    /*public Genres(String Genre)
-    {
-        this.GenreType = Genre;
-    }*/
     
     /**
      * Draws the genre buttons
      */
     public void DrawButtons(String Genre)
     {
-        UI.println("Please select what genre you want to select");
+       UI.println("Please select what genre you want to select");
+       //Drawing all the buttons
        for (int i = 0 ; i < MAXGENRES; i++)
        
        {
@@ -54,47 +45,52 @@ public class Genres
            GenreList[i] = new GenreButtons(LEFT, TOP*(i+1), ButtonColor, TextColor, GenreName); 
         }
        
-        
+       //Having the user click on a button
        while (Choose == true)
        {
            UI.setMouseListener(this::manageButtons );
        }
        
+       //Calling the method that sets the genre
        AssignGenre(ChosenGenre);
        
     }
     
-    public void AssignGenre(int number)
+    /**
+     * Checks what genre the user has selected
+     * 
+     */
+    public void AssignGenre(int ChosenGenre)
     {
         // Checking what button the user has clicked on
-       if (this.ChosenGenre == 0)
+       if (ChosenGenre == 0)
        {
-           UI.clearPanes();
            Genre = "Action";
+           UI.clearGraphics();
        }
        else if (this.ChosenGenre == 1)
        {
-           UI.clearPanes();
+           UI.clearGraphics();
            Genre = "horror";
         }
        else if (this.ChosenGenre == 2)
        {
-           UI.clearPanes();
+           UI.clearGraphics();
            Genre = "Sci fi";
         }
         else if (this.ChosenGenre == 3)
        {
-           UI.clearPanes();
+           UI.clearGraphics();
            Genre = "Romance";
         }
        else if (this.ChosenGenre == 4)
        {
-           UI.clearPanes();
+           UI.clearGraphics();
            Genre = "Mystery";
         }
         else if (this.ChosenGenre == 5)
        {
-           UI.clearPanes();
+           UI.clearGraphics();
            Genre = "Other";
         } 
     }
@@ -107,6 +103,7 @@ public class Genres
      */
     public void manageButtons(String action, double x, double y)
     {
+        //Checking if the user clicked on a button
         if (action.equals("clicked"))
         {
            for (int i = 0 ; i < MAXGENRES; i++)
@@ -120,7 +117,6 @@ public class Genres
         }
         else
         {
-            UI.println("Please click on one of the buttons");
         }
     }
     

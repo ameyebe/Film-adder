@@ -5,7 +5,7 @@
  * Has the films genre as a string
  * 
  * @author Benjamin Ameye
- * @version 2
+ * @version 3
  */
 public class Name
 {
@@ -15,7 +15,10 @@ public class Name
 
     /**
      * Constructor for objects of class Name
-     * @param   director    The name of the films director
+     * 
+     * @param  filmDirector The name of the films director
+     * @param  filmScore The films average score
+     * @param  filmGenre The films genre
      */
     public Name(String filmDirector, int filmScore, String filmGenre)
     {
