@@ -4,7 +4,7 @@ import java.awt.Color;
  * Has the user select the button for what genre they want
  * 
  * @author Benjamin Ameye 
- * @version 3
+ * @version 4
  */
 public class Genres
 {
@@ -16,11 +16,12 @@ public class Genres
     private Color[] ButtonColors = {Color.red, Color.black, Color.green, Color.pink, 
     Color.yellow, Color.blue};
     private Color[] TextColors = {Color.green, Color.red, Color.white, Color.gray, 
-    Color.blue, Color.black};
+    Color.blue, Color.orange};
     
     //Variables to pass into Genrebuttons
     private static final double LEFT = 50;  // X axis
     private static final double TOP = 60;  // Y axis
+    private static double StartX, StartY;
     private static int ChosenGenre = 0;
     private String GenreName = "";
     private String Genre = "";
@@ -71,7 +72,7 @@ public class Genres
        else if (this.ChosenGenre == 1)
        {
            UI.clearGraphics();
-           Genre = "horror";
+           Genre = "Horror";
         }
        else if (this.ChosenGenre == 2)
        {
@@ -114,9 +115,6 @@ public class Genres
                    Choose = false;
                 }
            }
-        }
-        else
-        {
         }
     }
     

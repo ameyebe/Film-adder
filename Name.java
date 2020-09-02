@@ -5,7 +5,7 @@
  * Has the films genre as a string
  * 
  * @author Benjamin Ameye
- * @version 3
+ * @version 4
  */
 public class Name
 {

@@ -5,18 +5,18 @@ import ecs100.*;
  * Holds the films
  * 
  * @author Benjamin Ameye
- * @version 3
+ * @version 4
  */
 public class Film
 {
     // Setting up Hashmap
-    private HashMap<String, Name> FilmsStored;
+    private HashMap<String, Name> filmsStored;
     
     // Declaring variables to store the films score, director and genre
-    private String FilmDirector = "";
-    private String FilmGenre = "";
-    private int FilmScore = 0;
-    
+    private String filmDirector = "";
+    private String filmGenre = "";
+    private int filmScore = 0;
+    private Recomender r = new Recomender();
 
     /**
      * Constructor for objects of class Film
@@ -24,8 +24,7 @@ public class Film
     public Film()
     {
         // Creating a hashmap to store the films and their information
-        FilmsStored = new HashMap<String, Name>();
-        
+        filmsStored = new HashMap<String, Name>();    
     }
 
     /**
@@ -36,17 +35,19 @@ public class Film
     {
         //Printing all films
         UI.println("These are all the films we have");
-        for (String name : FilmsStored.keySet())
+        UI.println();
+        for (String name : filmsStored.keySet())
         {
-            FilmScore = FilmsStored.get(name).getScore();
-            FilmDirector = FilmsStored.get(name).getDirector();
-            FilmGenre = FilmsStored.get(name).getGenre();
+            //setting variables to use when printing
+            filmScore = filmsStored.get(name).getScore();
+            filmDirector = filmsStored.get(name).getDirector();
+            filmGenre = filmsStored.get(name).getGenre();
             
             // Printing on multiple lines to make it easier to read.
             UI.println("Films Name: " + name);
-            UI.println("Score: " + FilmScore);
-            UI.println("Director: " + FilmDirector);
-            UI.println("Genre: " + FilmGenre);
+            UI.println("Score: " + filmScore + "/100");
+            UI.println("Director: " + filmDirector);
+            UI.println("Genre: " + filmGenre);
             UI.println();
         }
     }
@@ -55,88 +56,205 @@ public class Film
     /**
      * Prints the films based on the director the user has entered
      * 
-     * @param Director  The name of the films director
+     * @param director  The name of the films director
      */
-    public void printDirectors(String Director)
+    public void printDirectors(String director)
     {
-        UI.println("These are the films we have, directed by " + Director);
+        UI.println();
+        UI.println("These are the films we have, directed by " + director);
         UI.println();
         
-        for (String name : FilmsStored.keySet())
+        for (String name : filmsStored.keySet())
         {
-           //Checks if the current films directed by the director selected
-           FilmDirector = FilmsStored.get(name).getDirector();
-           if (FilmDirector.equals(Director))
+            //Checks if the current films directed by the director selected
+            filmDirector = filmsStored.get(name).getDirector();
+            if (filmDirector.equals(director))
             {
-            FilmScore = FilmsStored.get(name).getScore();
-            FilmGenre = FilmsStored.get(name).getGenre();
-            // Printing on multiple lines to make it easier to read.
-            UI.println("Films Name: " + name);
-            UI.println("Score: " + FilmScore);
-            UI.println("Genre: " + FilmGenre);
-            UI.println();
-           }
+               //setting variables to use when printing
+                filmScore = filmsStored.get(name).getScore();
+                filmGenre = filmsStored.get(name).getGenre();
+                // Printing on multiple lines to make it easier to read.
+                UI.println("Films Name: " + name);
+                UI.println("Score: " + filmScore + "/100");
+                UI.println("Genre: " + filmGenre);
+                UI.println();
+            }
         }
     }
     
     /**
      * Prints the films based on what genre the user has selected
      * 
-     * @param Genre The genre chosen by the user
+     * @param genre The genre chosen by the user
      * 
      */
-    public void printGenres(String Genre)
+    public void printGenres(String genre)
     {
         UI.println();
-        UI.println("Here are all ours films under the " + Genre + " Genre");
+        UI.println("Here are all ours films under the " + genre + " genre");
+        boolean noGenre = true;
         UI.println();
         
-        for (String name : FilmsStored.keySet())
-            {
-            FilmGenre = FilmsStored.get(name).getGenre();
+        for (String name : filmsStored.keySet())
+        {
+            filmGenre = filmsStored.get(name).getGenre();
             //Checking if the current films genre is the one the user wanted
-            if (FilmGenre.equals(Genre))
+            if (filmGenre.equals(genre))
             {
-                FilmScore = FilmsStored.get(name).getScore();
-                FilmDirector = FilmsStored.get(name).getDirector();
+                //setting variables to use when printing
+                filmScore = filmsStored.get(name).getScore();
+                filmDirector = filmsStored.get(name).getDirector();
                 // Printing on multiple lines to make it easier to read.
                 UI.println("Films Name: " + name);
-                UI.println("Score: " + FilmScore);
-                UI.println("Director: " + FilmDirector);
+                UI.println("Score: " + filmScore + "/100");
+                UI.println("Director: " + filmDirector);
+                noGenre = false;
                 UI.println();
             }
-            
         }
         
+        //Tells the user if their arn't any films to print
+        if (noGenre == true)
+        {
+            UI.println("We have no films under the " + genre + " genre");
+        }
     }
     
     /**
      * Prints the films based on the score the user has chosen
+     * Checks how the user wants to print the films
      * 
-     * @param Score  the score chosen by the user
+     * @param score  the score chosen by the user
+     * @param method  how the user wants to print the films
      */
-    public void printScore(double Score)
+    public void printScore(double score, String method)
     {
-        int SCORE = (int)Score;
+        //Converts current score to a int
+        int scoreSet = (int)score;
+        boolean noFilms = true;
         
-        UI.println("Here are all ours films with a score" 
-         + "of " + SCORE + " or above");
-        for (String name : FilmsStored.keySet())
+        if (method.equals("A"))
         {
-            FilmScore = FilmsStored.get(name).getScore();
-            //Checking if the current films score is greater than or equal to the user score
-            if (FilmScore >= SCORE)
+            UI.println("Here are all our films with a score" 
+                + "of " + scoreSet + " or above");
+        }
+        else if (method.equals("B"))
+        {
+            UI.println("Here are all our films with a score" +
+                " 5 points above or below " + scoreSet);
+        }
+        
+        UI.println();
+        for (String name : filmsStored.keySet())
+        {
+            filmScore = filmsStored.get(name).getScore();
+            filmGenre = filmsStored.get(name).getGenre();
+            filmDirector = filmsStored.get(name).getDirector();
+            /*checks if the user wants to print
+             * films with a score equal to the entered score of current score*/
+            if (method.equals("A"))
             {
-                FilmGenre = FilmsStored.get(name).getGenre();
-                FilmDirector = FilmsStored.get(name).getDirector();
-                // Printing on multiple lines to make it easier to read.
-                UI.println("Films Name: " + name);
-                UI.println("Score: " + FilmScore);
-                UI.println("Director: " + FilmDirector);
-                UI.println("Genre: " + FilmGenre);
-                UI.println();
+                /*Checking if the current films score 
+                 * is greater than or equal to the user score*/
+                if (filmScore >= scoreSet)
+                {
+                    // Printing on multiple lines to make it easier to read.
+                    UI.println("Films Name: " + name);
+                    UI.println("Score: " + filmScore);
+                    UI.println("Director: " + filmDirector);
+                    UI.println("Score: " + filmScore + "/100");
+                    UI.println();
+                    noFilms = false;
+                }
+            }
+            
+            else if (method.equals("B"))
+            {
+                /*Checks if the user wants to prints all films with a 
+                 * score within 5 points above or below the current score*/
+                if (filmScore >= scoreSet - 5 && filmScore <= scoreSet + 5)
+                {
+                    // Printing on multiple lines to make it easier to read
+                    UI.println("Films Name: " + name);
+                    UI.println("Score: " + filmScore + "/100");
+                    UI.println("Director: " + filmDirector);
+                    UI.println("Genre: " + filmGenre);
+                    UI.println();
+                    noFilms = false;
+                }
             }
         } 
+        
+        //Tells the user if there arn't any films to print.
+        if (noFilms == true && method.equals("A"))
+        {
+            UI.println("We dont have any films with a score of " 
+                + scoreSet + ", or above");
+        }
+        
+        else if (noFilms == true && method.equals("B"))
+        {
+            UI.println("We don't have any films with a score 5 points" + 
+                " above or below " + scoreSet);
+        }
+    }
+    
+    /**
+     * Basically has the user view the film. 
+     * 
+     * @param film the name of the film the user selected
+     */
+    public void watchFilm(String film)
+    {
+        //Setting variables
+        filmScore = filmsStored.get(film).getScore();
+        filmGenre = filmsStored.get(film).getGenre();
+        filmDirector = filmsStored.get(film).getDirector();
+        //Printing the films information
+        UI.println("Films Name: " + film);
+        UI.println("Score: " + filmScore + "/100");
+        UI.println("Director: " + filmDirector);
+        UI.println("Genre: " + filmGenre);
+        UI.sleep(1500);
+        
+    }
+    
+    /**
+     * Asks the user how and if they'd like to recommend the film
+     * @param name the name of the film they've watched
+     */
+    public void recomend(String name)
+    {
+        //Checks if there are enough films to warrent recomending one
+        if (filmsStored.size() >= 3)
+        {
+            boolean recomend = true;
+            while (recomend == true)
+            {
+                //Asking to user if they want a film recomended to them
+                String getRecomend = UI.askString("Would you like a film to" + 
+                    " recomended, yes ('Y') or no ('N'): ");
+                getRecomend = getRecomend.toUpperCase();
+                if (getRecomend.equals("Y"))
+                {
+                    recomend = false;
+                    //Calls the method that recomends a film
+                    r.chooseRecomendation(filmsStored, name);
+                }
+                
+                else if (getRecomend.equals("N"))
+                {
+                    recomend = false;
+                    UI.println("Then please continue to use our site to" +
+                        " search for films you like");
+                }
+            }
+        }
+        else
+        {
+            UI.println("Please continue to use our site to search for" +
+                " Films you like");
+        }
     }
     
     /**
@@ -152,8 +270,9 @@ public class Film
     {
         UI.clearPanes();
         //Adding a film to the Hash map
-        FilmsStored.put(name, new Name(director, score, genre));
+        filmsStored.put(name, new Name(director, score, genre));
         
+        //Telling user the film has been added
         UI.println(name + " has been added");
     }
 }
